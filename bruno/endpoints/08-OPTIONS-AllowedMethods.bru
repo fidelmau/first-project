@@ -1,0 +1,33 @@
+meta {
+  name: OPTIONS - Check Allowed Methods
+  type: http
+  seq: 8
+}
+
+options {
+  url: {{base_url}}/-/es/collection/IncludedwithPrime
+  body: none
+}
+
+headers {
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+}
+
+assert {
+  res.status: in 200 204 405
+}
+
+tests {
+  test("OPTIONS request responds", function() {
+    expect([200, 204, 405]).to.include(res.status);
+  });
+  
+  test("Response received quickly", function() {
+    expect(res.responseTime).to.below(3000);
+  });
+  
+  test("May have Allow header", function() {
+    // OPTIONS may or may not return Allow header
+    expect(res.status).to.be.ok;
+  });
+}

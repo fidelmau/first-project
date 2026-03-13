@@ -1,0 +1,35 @@
+meta {
+  name: GET - Check Headers
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url}}/-/es/collection/IncludedwithPrime
+  body: none
+}
+
+headers {
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+}
+
+assert {
+  res.status: eq 200
+  res.headers['cache-control']: exists
+}
+
+tests {
+  test("Has proper security headers", function() {
+    expect(res.headers).to.have.property('strict-transport-security')
+      .or.have.property('content-security-policy');
+  });
+  
+  test("Has caching headers", function() {
+    expect(res.headers).to.have.property('cache-control')
+      .or.have.property('etag');
+  });
+  
+  test("Status is successful", function() {
+    expect(res.status).to.equal(200);
+  });
+}

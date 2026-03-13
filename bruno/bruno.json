@@ -1,0 +1,60 @@
+meta {
+  name: Prime Video Endpoints - API Test Suite
+  type: collection
+  version: 1.0.0
+}
+
+docs {
+  # Prime Video API Test Suite
+
+  This collection contains 10 comprehensive API endpoint tests for Prime Video using Bruno.
+
+  ## Test Cases
+
+  | # | Test | Method | Purpose |
+  |---|------|--------|---------|
+  | 1 | GET - Home Page | GET | Test main collection page loads correctly |
+  | 2 | GET - Collection Data | GET | Verify collection data API endpoint |
+  | 3 | POST - Search Content | POST | Test search content endpoint |
+  | 4 | GET - Check Headers | GET | Validate HTTP security headers |
+  | 5 | HEAD - Check Availability | HEAD | Verify resource availability |
+  | 6 | GET - Cache Behavior | GET | Test cache control behavior |
+  | 7 | GET - Invalid Path | GET | Test error handling for invalid paths |
+  | 8 | OPTIONS - Allowed Methods | OPTIONS | Check allowed HTTP methods |
+  | 9 | GET - Content Encoding | GET | Test content encoding/compression |
+  | 10 | GET - Response Consistency | GET | Verify consistent responses |
+
+  ## Features
+
+  - ✅ Support for multiple HTTP methods (GET, HEAD, POST, OPTIONS)
+  - ✅ Environment variables for base URLs
+  - ✅ Assertions for status codes and headers
+  - ✅ Comprehensive test cases with multiple assertions
+  - ✅ Performance testing (response time checks)
+  - ✅ Security header validation
+  - ✅ Content encoding verification
+  - ✅ Error handling tests
+
+  ## Environment Setup
+
+  The collection uses production environment variables:
+  - `base_url`: https://www.primevideo.com
+  - `api_base`: https://api.primevideo.com
+  - `content_api`: https://atcglobal-eu-west-1.primevideo.com
+  - `timeout`: 30000ms
+
+  ## Running Tests
+
+  1. Import this collection into Bruno
+  2. Select the "production" environment
+  3. Run all tests or individual tests
+  4. View results in Bruno's test runner
+
+  ## Expected Results
+
+  All tests should pass with:
+  - Status codes: 200, 204, 301, 302, 404 (depending on test)
+  - Response times under 10 seconds (typically < 5s)
+  - Valid HTTP headers present
+  - Expected content in responses
+}

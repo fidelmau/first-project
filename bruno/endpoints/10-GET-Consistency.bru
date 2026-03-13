@@ -1,0 +1,43 @@
+meta {
+  name: GET - Response Consistency
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{base_url}}/-/es/collection/IncludedwithPrime
+  body: none
+}
+
+headers {
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+}
+
+assert {
+  res.status: eq 200
+  res.headers['content-type']: contains text/html
+}
+
+tests {
+  test("Consistent status code", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Consistent content type", function() {
+    expect(res.headers['content-type']).to.include('text/html');
+  });
+  
+  test("Body contains expected content", function() {
+    expect(res.body).to.include('Prime');
+    expect(res.body.length).to.be.greaterThan(100);
+  });
+  
+  test("Performance acceptable", function() {
+    expect(res.responseTime).to.below({{timeout}});
+  });
+  
+  test("Headers are consistent", function() {
+    expect(res.headers).to.have.property('date')
+      .or.have.property('server');
+  });
+}

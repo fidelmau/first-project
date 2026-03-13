@@ -1,0 +1,38 @@
+meta {
+  name: GET - Home Page
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/-/es/collection/IncludedwithPrime
+  body: none
+}
+
+query {
+}
+
+headers {
+  Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+  Accept-Language: es-ES,es;q=0.9
+}
+
+assert {
+  res.status: eq 200
+  res.headers['content-type']: contains html
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Response contains Prime Video markup", function() {
+    expect(res.body).to.include('Prime');
+  });
+  
+  test("Page loads in reasonable time", function() {
+    expect(res.responseTime).to.below(5000);
+  });
+}

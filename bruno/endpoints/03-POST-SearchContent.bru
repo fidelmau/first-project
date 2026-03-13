@@ -1,0 +1,44 @@
+meta {
+  name: POST - Search Content
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{content_api}}/search/SearchAndBrowse
+  body: json
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+}
+
+body:json {
+  {
+    "searchString": "movie",
+    "pageNumber": 1,
+    "pageSize": 50,
+    "sortBy": "relevance",
+    "languages": ["es"]
+  }
+}
+
+assert {
+  res.status: in 200 400 401
+}
+
+tests {
+  test("Search endpoint responds", function() {
+    expect(res.status).to.be.oneOf([200, 400, 401]);
+  });
+  
+  test("Response is JSON", function() {
+    expect(res.headers['content-type']).to.include('json');
+  });
+  
+  test("Has reasonable response time", function() {
+    expect(res.responseTime).to.below(10000);
+  });
+}

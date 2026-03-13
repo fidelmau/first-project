@@ -1,0 +1,32 @@
+meta {
+  name: HEAD - Check Resource Availability
+  type: http
+  seq: 5
+}
+
+head {
+  url: {{base_url}}/-/es/collection/IncludedwithPrime
+  body: none
+}
+
+headers {
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+}
+
+assert {
+  res.status: in 200 301 302 404
+}
+
+tests {
+  test("Resource exists or redirects", function() {
+    expect([200, 301, 302]).to.include(res.status);
+  });
+  
+  test("Response has headers", function() {
+    expect(Object.keys(res.headers).length).to.be.greaterThan(0);
+  });
+  
+  test("Quick response time", function() {
+    expect(res.responseTime).to.below(3000);
+  });
+}

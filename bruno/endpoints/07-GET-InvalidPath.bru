@@ -1,0 +1,32 @@
+meta {
+  name: GET - Invalid Path Test
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{base_url}}/invalid-endpoint-12345
+  body: none
+}
+
+headers {
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+}
+
+assert {
+  res.status: in 404 301 302
+}
+
+tests {
+  test("Invalid endpoint returns 404 or redirect", function() {
+    expect([404, 301, 302]).to.include(res.status);
+  });
+  
+  test("Response returns in reasonable time", function() {
+    expect(res.responseTime).to.below(5000);
+  });
+  
+  test("Response has proper structure", function() {
+    expect(res.headers).to.have.property('content-type');
+  });
+}

@@ -1,0 +1,41 @@
+meta {
+  name: GET - Collection Data
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{content_api}}/catalog/GetPlaybackResources?asin=&template=GridTemplate&count=100
+  body: none
+}
+
+headers {
+  Accept: application/json
+  Accept-Language: {{language}}
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+  Authorization: Bearer token_placeholder
+}
+
+query {
+  asin:
+  template: GridTemplate
+  count: 100
+}
+
+assert {
+  res.status: in 200 401 403
+}
+
+tests {
+  test("Response is valid", function() {
+    expect([200, 401, 403]).to.include(res.status);
+  });
+  
+  test("Response has proper format", function() {
+    expect(res.headers['content-type']).to.include('json');
+  });
+  
+  test("Response time acceptable", function() {
+    expect(res.responseTime).to.below({{timeout}});
+  });
+}

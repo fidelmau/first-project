@@ -1,0 +1,38 @@
+meta {
+  name: GET - Check Cache Behavior
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{base_url}}/-/es/collection/IncludedwithPrime
+  body: none
+}
+
+headers {
+  Cache-Control: max-age=0
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("Response status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Has Content-Length header", function() {
+    expect(res.headers).to.have.property('content-length')
+      .or.have.property('transfer-encoding');
+  });
+  
+  test("Response body not empty", function() {
+    expect(res.body.length).to.be.greaterThan(0);
+  });
+  
+  test("Response contains expected content", function() {
+    expect(res.body).to.include('Prime');
+  });
+}
