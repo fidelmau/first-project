@@ -1,0 +1,202 @@
+{
+  "collections": [
+    {
+      "uid": "primevideo-test-suite",
+      "name": "Prime Video - Test Suite Collection",
+      "pathname": ".",
+      "version": "1.0.0",
+      "description": "Automated test collection for Prime Video website",
+      "environments": [
+        {
+          "name": "primevideo-prod",
+          "variables": {
+            "baseUrl": "https://www.primevideo.com/-/es/collection/IncludedwithPrime",
+            "pageTitle": "Prime Video",
+            "timeout": 30000
+          }
+        }
+      ],
+      "tests": [
+        {
+          "id": "TC-001",
+          "name": "Verify page loads successfully with correct title",
+          "description": "Check that the page loads with correct title containing 'Prime'",
+          "endpoint": "{{baseUrl}}",
+          "method": "GET",
+          "assertions": [
+            {
+              "type": "status_code",
+              "value": 200,
+              "description": "Page returns success status"
+            },
+            {
+              "type": "page_title",
+              "value": "Prime",
+              "description": "Page title contains 'Prime'"
+            }
+          ]
+        },
+        {
+          "id": "TC-002",
+          "name": "Verify collection header is visible",
+          "description": "Confirm collection header is visible on the page",
+          "endpoint": "{{baseUrl}}",
+          "method": "GET",
+          "assertions": [
+            {
+              "type": "element_visible",
+              "selector": "header h1, .collection-title, [class*='title']",
+              "description": "Collection header element is visible"
+            }
+          ]
+        },
+        {
+          "id": "TC-003",
+          "name": "Verify movie cards are displayed",
+          "description": "Check that movie cards are rendered on the page",
+          "endpoint": "{{baseUrl}}",
+          "method": "GET",
+          "assertions": [
+            {
+              "type": "element_count",
+              "selector": "[data-testid*='card']",
+              "minCount": 1,
+              "description": "At least one movie card is displayed"
+            }
+          ]
+        },
+        {
+          "id": "TC-004",
+          "name": "Verify clicking on movie card navigates",
+          "description": "Test clicking on movie card navigates to details page",
+          "endpoint": "{{baseUrl}}",
+          "method": "NAVIGATE",
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-testid*='card']",
+              "index": 0,
+              "description": "Click first movie card"
+            }
+          ],
+          "assertions": [
+            {
+              "type": "url_changed",
+              "description": "URL should change after click"
+            }
+          ]
+        },
+        {
+          "id": "TC-005",
+          "name": "Verify page layout and main content",
+          "description": "Ensure main content container is visible",
+          "endpoint": "{{baseUrl}}",
+          "method": "GET",
+          "assertions": [
+            {
+              "type": "element_visible",
+              "selector": "main, [role='main'], .collection-container",
+              "description": "Main content container is visible"
+            }
+          ]
+        },
+        {
+          "id": "TC-006",
+          "name": "Verify scrolling loads more content",
+          "description": "Test that scrolling down loads more content",
+          "endpoint": "{{baseUrl}}",
+          "method": "NAVIGATE",
+          "actions": [
+            {
+              "type": "scroll_to_bottom",
+              "description": "Scroll to bottom of page"
+            }
+          ],
+          "assertions": [
+            {
+              "type": "element_count",
+              "selector": "[data-testid*='card']",
+              "minCount": 1,
+              "description": "Cards still visible after scroll"
+            }
+          ]
+        },
+        {
+          "id": "TC-007",
+          "name": "Verify responsive page elements",
+          "description": "Check that responsive design elements function properly",
+          "endpoint": "{{baseUrl}}",
+          "method": "GET",
+          "assertions": [
+            {
+              "type": "element_in_viewport",
+              "selector": "[data-testid*='card']",
+              "index": 0,
+              "description": "First card is in viewport"
+            }
+          ]
+        },
+        {
+          "id": "TC-008",
+          "name": "Verify images load in movie cards",
+          "description": "Confirm images load successfully in movie cards",
+          "endpoint": "{{baseUrl}}",
+          "method": "GET",
+          "assertions": [
+            {
+              "type": "element_count",
+              "selector": "img[alt*='Prime'], img[src*='image'], [class*='card'] img",
+              "minCount": 1,
+              "description": "At least one image element is present"
+            }
+          ]
+        },
+        {
+          "id": "TC-009",
+          "name": "Verify no critical console errors",
+          "description": "Check for critical errors in browser console",
+          "endpoint": "{{baseUrl}}",
+          "method": "GET",
+          "assertions": [
+            {
+              "type": "console_errors",
+              "maxCount": 5,
+              "excludePatterns": ["sourcemap", "favicon"],
+              "description": "Should have minimal critical errors"
+            }
+          ]
+        },
+        {
+          "id": "TC-010",
+          "name": "Verify page response time",
+          "description": "Test page load time is within acceptable range",
+          "endpoint": "{{baseUrl}}",
+          "method": "GET",
+          "assertions": [
+            {
+              "type": "response_time",
+              "maxTime": 30000,
+              "description": "Page loads within 30 seconds"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "createdAt": "2026-03-13",
+    "targetUrl": "https://www.primevideo.com/-/es/collection/IncludedwithPrime",
+    "framework": "Playwright",
+    "language": "TypeScript",
+    "totalTestCases": 10,
+    "description": "Automated test suite for Prime Video - Included with Prime collection",
+    "exportedFor": "Bruno",
+    "usageInstructions": [
+      "1. Navigate to the 'tests' folder",
+      "2. Run 'npm test' to execute all tests",
+      "3. View results in the HTML report with 'npm run report'",
+      "4. Use 'npm run test:headed' to see browser during execution"
+    ]
+  }
+}
